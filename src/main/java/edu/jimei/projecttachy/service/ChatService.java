@@ -24,9 +24,9 @@ public class ChatService {
 
     @Transactional
     public Message generateResponse(Long conversationId, String userContent) {
-        // 1. Find the conversation, or throw an exception if not found
+        // 1. Find the conversation.
         Conversation conversation = conversationRepository.findById(conversationId)
-                .orElseThrow(() -> new IllegalArgumentException("Conversation not found with ID: " + conversationId));
+                .orElseGet(() -> createNewConversation(userContent));
 
         // 2. Create and save the user's message
         Message userMessage = new Message();
@@ -47,5 +47,16 @@ public class ChatService {
         agentMessage.setSenderType(Message.SenderType.agent);
         agentMessage.setContent(agentContent);
         return messageRepository.save(agentMessage);
+    }
+
+    private Conversation createNewConversation(String userContent) {
+        Conversation newConversation = new Conversation();
+        // In a real app, user ID would come from the security context
+        newConversation.setUserId(1L); 
+        
+        String title = userContent.length() > 50 ? userContent.substring(0, 50) + "..." : userContent;
+        newConversation.setTitle(title);
+        
+        return conversationRepository.save(newConversation);
     }
 } 
