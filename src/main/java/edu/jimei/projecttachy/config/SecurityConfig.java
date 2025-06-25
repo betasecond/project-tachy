@@ -30,9 +30,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/login", "/api/register").permitAll()
-                .requestMatchers("/h2-console/**").permitAll() // 如果使用H2数据库测试
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() // 临时开放所有接口，方便演示
             );
 
         return http.build();
