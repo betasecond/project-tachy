@@ -10,6 +10,8 @@ import java.util.Map;
 
 record LoginRequest(String email, String password) {}
 record LoginResponse(String token) {}
+record RegisterRequest(String name, String email, String password) {}
+record RegisterResponse(String message, Long userId) {}
 record ErrorResponse(String message) {}
 
 @RestController
@@ -32,6 +34,28 @@ public class AuthController {
         } catch (RuntimeException e) {
             System.out.println("Login failed for user: " + loginRequest.email() + ", reason: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        try {
+            System.out.println("Register attempt for user: " + registerRequest.email());
+            
+            edu.jimei.projecttachy.entity.User user = authService.register(
+                registerRequest.name(),
+                registerRequest.email(), 
+                registerRequest.password()
+            );
+            
+            System.out.println("Registration successful for user: " + registerRequest.email());
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new RegisterResponse("注册成功", user.getId()));
+                    
+        } catch (RuntimeException e) {
+            System.out.println("Registration failed for user: " + registerRequest.email() + ", reason: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(e.getMessage()));
         }
     }
