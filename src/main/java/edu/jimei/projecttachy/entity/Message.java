@@ -22,6 +22,7 @@ public class Message {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sender_type", nullable = false, columnDefinition = "message_sender_type")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private SenderType senderType;
 
     @Column(nullable = false, columnDefinition = "TEXT")
