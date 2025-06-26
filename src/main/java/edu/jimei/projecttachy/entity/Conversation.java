@@ -16,7 +16,9 @@ public class Conversation {
     @Column(nullable = false)
     private Long userId; // For now, we'll just store the ID. Will link to User entity later.
 
-    private Long agentId; // Similarly, just the ID for now.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
 
     @Column(nullable = false)
     private String title;
@@ -41,12 +43,12 @@ public class Conversation {
         this.userId = userId;
     }
 
-    public Long getAgentId() {
-        return agentId;
+    public Agent getAgent() {
+        return agent;
     }
 
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public String getTitle() {

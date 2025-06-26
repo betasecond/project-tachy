@@ -22,6 +22,9 @@ public class Agent {
     @Column(name = "compatible_sources", columnDefinition = "text[]")
     private List<String> compatibleSources;
 
+    @Column(name = "system_prompt")
+    private String systemPrompt;
+
     public Long getId() {
         return id;
     }
@@ -60,5 +63,13 @@ public class Agent {
 
     public void setCompatibleSources(List<String> compatibleSources) {
         this.compatibleSources = compatibleSources;
+    }
+
+    public String getSystemPrompt() {
+        return systemPrompt;
+    }
+
+    public void setSystemPrompt(String systemPrompt) {
+        this.systemPrompt = systemPrompt;
     }
 } 

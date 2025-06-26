@@ -3,6 +3,7 @@ package edu.jimei.projecttachy.controller;
 import edu.jimei.projecttachy.controller.dto.MessageDto;
 import edu.jimei.projecttachy.entity.Message;
 import edu.jimei.projecttachy.service.ChatService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,9 +51,9 @@ public class ConversationController {
 
 
     @PostMapping("/{conversationId}/agent")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void selectAgent(@PathVariable Long conversationId, @RequestBody AgentSelectionRequest request) {
-        // TODO: Implement logic to associate agent with conversation
-        System.out.println("Conversation " + conversationId + " selected agent " + request.agentId());
+        chatService.selectAgentForConversation(conversationId, request.agentId());
     }
 
 } 
